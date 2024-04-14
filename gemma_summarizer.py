@@ -25,12 +25,8 @@ class GemmaSummarizer(Summarizer):
         self.model = AutoModelForCausalLM.from_pretrained("google/gemma-1.1-2b-it", token=self.hf_token)
 
         if self.device != "cpu":
-            try:
-                self.model.to(self.device)
-            except:
-                print("Failed to load model to device. Trying half precision.")
-                self.model = self.model.half()
-                self.model.to(self.device)
+            self.model = self.model.half()
+            self.model.to(self.device)
 
     def _prepare_prompt(self, text: str):
         prompt = "<start_of_turn>user\n"
