@@ -3,6 +3,9 @@ import gradio as gr
 
 from newsapi_headlines import NewsAPIHeadlines
 from gemma_summarizer import GemmaSummarizer
+from llama3_summarizer import LlamaSummarizer
+
+Summarizer = LlamaSummarizer
 
 import torch
 
@@ -16,7 +19,7 @@ def summarize_news(api_key: str, hf_token: str):
     print(news)
 
     print("Generating the summary")
-    summarizer = GemmaSummarizer(hf_token, device)
+    summarizer = Summarizer(hf_token, device)
     summary, _ = summarizer.summarize(news)
     print(summary)
 
@@ -28,6 +31,6 @@ iface = gr.Interface(fn=summarize_news,
                      outputs=[gr.Textbox(label="Headlines"), 
                               gr.Textbox(label="Summary")],
                      title="News Headline Summarizer",
-                     description="Summarize news headlines using Gemma 2b model.")
+                     description="Summarize news headlines.")
 
 iface.launch(share=True)
